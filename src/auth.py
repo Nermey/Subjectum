@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from sqlalchemy import select, and_
+from sqlalchemy import select
 
 from database import session_local, engine
 from models import Users, Base
