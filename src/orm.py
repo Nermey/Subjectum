@@ -1,6 +1,6 @@
 from database import Base, engine, session_local
-from models import Users
 from sqlalchemy import select
+from models import Users
 
 
 class Authorization:
@@ -30,4 +30,18 @@ class Authorization:
         async with session_local() as session:
             user_obj = Users(email=email, password=password, name=name)
             session.add(user_obj)
+            await session.commit()
+
+    @staticmethod
+    async def change_password(user_id, new_password):
+        async with session_local() as session:
+            user = await session.get(Users, user_id)
+            user.password = new_password
+            await session.commit()
+
+    @staticmethod
+    async def change_name(user_id, new_name):
+        async with session_local() as session:
+            user = await session.get(Users, user_id)
+            user.name = new_name
             await session.commit()
