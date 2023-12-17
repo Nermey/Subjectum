@@ -53,8 +53,7 @@ def fast_api_app():
 app = fast_api_app()
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(create_table())
+    asyncio.run(create_table())
     uvicorn.run(
         app="src.auth:app",
         host="localhost",
