@@ -1,14 +1,13 @@
-from database import Base, engine, session_local
+from database import Base, session_local, sync_engine
 from sqlalchemy import select
 from models import Users
+from schemas import UserDTO
 
 
 class Authorization:
     @staticmethod
-    async def create_tables():
-        async with engine.begin() as conn:
-            #await conn.run_sync(Base.metadata.drop_all)
-            await conn.run_sync(Base.metadata.create_all)
+    def create_tables():
+        Base.metadata.create_all(sync_engine)
 
     @staticmethod
     async def check_user_exist(email):
@@ -16,8 +15,7 @@ class Authorization:
             query = select(Users).filter_by(email=email)
             res = await session.execute(query)
             user = res.scalars().all()
-            print(user)
-            return len(user) == 0
+            return len(user) != 0
 
     @staticmethod
     async def get_user_authorization(email, password):
@@ -25,7 +23,10 @@ class Authorization:
             query = select(Users).filter_by(email=email, password=password)
             res = await session.execute(query)
             user = res.scalars().all()
-            return len(user) != 0
+            print(user)
+            user_dto = [UserDTO.model_validate(row, from_attributes=True) for row in user]
+            print(user_dto[0].id)
+            return [len(user) != 0, user_dto[0].id]
 
     @staticmethod
     async def add_new_user(email, password, name):
@@ -33,6 +34,8 @@ class Authorization:
             user_obj = Users(email=email, password=password, name=name, progress=0)
             session.add(user_obj)
             await session.commit()
+            await session.refresh(user_obj)
+            return user_obj.id
 
     @staticmethod
     async def change_password(user_id, new_password):

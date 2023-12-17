@@ -20,3 +20,7 @@ class NameChanger(BaseModel):
 class User_login(BaseModel):
     email: str
     password: str
+
+
+class UserDTO(User):
+    id: int

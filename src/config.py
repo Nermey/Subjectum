@@ -11,3 +11,8 @@ db_port = os.getenv("BD_PORT")
 
 def DATA_BASE_URL():
     return f"postgresql+asyncpg://{user}:{password}@{host}:{db_port}"
+
+
+def SYNC_DATA_BASE_URL():
+    return f"postgresql+psycopg2://{user}:{password}@{host}:{db_port}"
+
