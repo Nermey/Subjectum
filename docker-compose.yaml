@@ -1,6 +1,5 @@
 version: '3.5'
-# 6100 - auth service
-#6101 - auth_db
+
 services:
   db_auth:
     container_name: db_auth
@@ -20,11 +19,13 @@ services:
       - "postgres"
       - "-c"
       - "port=6101"
-#  app:
-#    build:
-#      context: .
-#    container_name: auth_service
-#    ports:
-#      - "6100:6100"
-#    depends_on:
-#      - db_auth
+  app:
+    build:
+      context: .
+    container_name: auth_service
+    env_file:
+      - .env
+    ports:
+      - "6100:6100"
+    depends_on:
+      - db_auth

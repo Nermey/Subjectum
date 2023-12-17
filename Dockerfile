@@ -3,11 +3,12 @@ FROM python:3.10
 WORKDIR /app
 
 COPY requirements.txt .
+COPY .env .
+
+RUN export $(cat .env | xargs)
 
 RUN pip install -r requirements.txt
 
 COPY src .
 
-CMD gunicorn auth:app --bind=0.0.0.0:6100
-
-
+CMD uvicorn auth:app --host $AUTH_HOST --port $AUTH_PORT
