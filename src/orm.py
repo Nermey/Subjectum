@@ -26,7 +26,7 @@ class Authorization:
             return user is not None
 
     @staticmethod
-    async def add_new_user(email, password, name):  # нужно ли импортировать класс User из auth (pydantic)
+    async def add_new_user(email, password, name):
         async with session_local() as session:
             user_obj = Users(email=email, password=password, name=name)
             session.add(user_obj)
@@ -44,4 +44,11 @@ class Authorization:
         async with session_local() as session:
             user = await session.get(Users, user_id)
             user.name = new_name
+            await session.commit()
+
+    @staticmethod
+    async def update_progress(user_id): # Функция для увеличения прогресса пользователя
+        async with session_local() as session:
+            user = await session.get(Users, user_id)
+            user.progress += 1
             await session.commit()

@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Index
+from sqlalchemy import MetaData, Index, Column, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from database import Base
 
@@ -11,6 +11,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
     name: Mapped[str] = mapped_column()
+    progress: Mapped[int] = Column(Integer) # Переменная, хранящая прогресс пользователя
 
 
 index_email = Index("idx_check_login", Users.email)
