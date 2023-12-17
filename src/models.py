@@ -11,6 +11,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
     name: Mapped[str] = mapped_column()
+    progress: Mapped[int] = mapped_column()
 
 
 index_email = Index("idx_check_login", Users.email)
