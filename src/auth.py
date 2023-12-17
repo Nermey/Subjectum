@@ -38,7 +38,7 @@ async def register(user: User):
     if await Authorization.check_user_exist(user.email):
         raise HTTPException(status_code=201, detail="user is already exist")
     await Authorization.add_new_user(user.email, user.password, user.name)
-    raise HTTPException(status_code=200, detail="user is successfully added")
+    raise HTTPException(status_code=200, detail="user is successfully added") # return user id
 
 
 @app.post("/login")
