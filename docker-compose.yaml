@@ -6,9 +6,12 @@ services:
     container_name: db_auth
     ports:
       - "6101:6101"
+    expose:
+      - "6101"
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=admin
@@ -17,3 +20,11 @@ services:
       - "postgres"
       - "-c"
       - "port=6101"
+#  app:
+#    build:
+#      context: .
+#    container_name: auth_service
+#    ports:
+#      - "6100:6100"
+#    depends_on:
+#      - db_auth
